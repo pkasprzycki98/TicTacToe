@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="GameInvitationConfirmationMessage" xml:space="preserve">
-    <value>Vous avez invité {0} pour la prochaine partie.</value>
+  <data name="DesktopTitle" xml:space="preserve">
+    <value>Zaproszenie do gry</value>
+  </data>
+  <data name="MobileTitle" xml:space="preserve">
+    <value>Zaproszenie do gry</value>
   </data>
 </root>

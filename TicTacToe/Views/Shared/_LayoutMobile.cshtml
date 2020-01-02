@@ -18,15 +18,16 @@
 </head>
 <body>
 	@Html.Partial("_Menu")
-    <div class="container body-content">
-       @RenderSection("Desktop", required: false)
-		@if (IsSectionDefined("Mobile")) { IgnoreSection("Mobile");}
-		@RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2017 - Kółko i krzyżyk</p>
-        </footer>
-    </div>
+	<div class="container body-content">
+		<div>Jestem w MOBILE</div>
+		@RenderSection("Mobile", required: false)
+		@if (IsSectionDefined("Desktop")) { IgnoreSection("Desktop"); }
+		@RenderBody();
+		<hr />
+		<footer>
+			<p>&copy; 2017 - Kółko i krzyżyk</p>
+		</footer>
+	</div>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

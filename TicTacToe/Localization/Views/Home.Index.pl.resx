@@ -117,7 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Title" xml:space="preserve">
-    <value>Witamy w grze Kółko i krzyżyk!</value>
+  <data name="DesktopTitle" xml:space="preserve">
+    <value>Witamy w grze komputerowej Kółko i krzyżyk!</value>
+  </data>
+  <data name="MobileTitle" xml:space="preserve">
+    <value>Witamy w grze mobilnej Kółko i krzyżyk!</value>
   </data>
 </root>

@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SubTitle" xml:space="preserve">
-    <value>Fiche Utilisateur</value>
+  <data name="DesktopTitle" xml:space="preserve">
+    <value>Potwierdzenie zaproszenia do gry</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Inscription de l'utilisateur</value>
+  <data name="MobileTitle" xml:space="preserve">
+    <value>Potwierdzenie zaproszenia do gry</value>
   </data>
 </root>

@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
     <PackageReference Include="Sendgrid" Version="9.9.0" />
   </ItemGroup>
 
@@ -38,10 +38,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\Shared\_LayoutMobile.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Localization\Controllers\GameInvitationController.pl.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\Controllers\GameInvitationController.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Localization\Controllers\GameInvitationController.resx">
@@ -51,24 +54,15 @@
     <EmbeddedResource Update="Localization\Models\UserModel.pl.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Localization\Models\UserModel.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Localization\Models\UserModel.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>UserModel.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\Views\Home.Index.fr.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Localization\Views\Home.Index.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Home.Index.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Localization\Views\UserRegistration.Index.pl.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\Views\UserRegistration.Index.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Localization\Views\UserRegistration.Index.resx">

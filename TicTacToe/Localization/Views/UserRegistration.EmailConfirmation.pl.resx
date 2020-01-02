@@ -118,12 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DesktopTitle" xml:space="preserve">
-    <value>Rejestracja użytkownika</value>
+    <value>Potwierdzenie rejestracji użytkownika</value>
   </data>
   <data name="MobileTitle" xml:space="preserve">
-    <value>Rejestracja użytkownika</value>
-  </data>
-  <data name="SubTitle" xml:space="preserve">
-    <value>Dane użytkownika</value>
+    <value>Potwierdzenie rejestracji użytkownika</value>
   </data>
 </root>
