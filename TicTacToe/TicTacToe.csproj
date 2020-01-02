@@ -5,6 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Views\GameInvitation\GameInvitationConfirmation.cshtml" />
+    <None Include="Views\GameInvitation\Index.cshtml" />
+    <None Include="Views\GameSession\Index.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Leaderboard\Index.cshtml" />
+    <None Include="Views\Shared\Components\GameSession\default.cshtml" />
+    <None Include="Views\Shared\_Account.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_LayoutEmail.cshtml" />
+    <None Include="Views\Shared\_LayoutMobile.cshtml" />
+    <None Include="Views\Shared\_Menu.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
     <PackageReference Include="Sendgrid" Version="9.9.0" />

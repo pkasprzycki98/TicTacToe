@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TicTacToe.Options;
 using TicTacToe.Services;
+using TicTacToe.Services.Interfaces;
 
 namespace TicTacToe.Extensions
 {

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using TicTacToe.Models;
 using TicTacToe.Services;
+using TicTacToe.Services.Interfaces;
 
 namespace TicTacToe.Controllers
 {

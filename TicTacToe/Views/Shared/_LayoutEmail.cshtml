@@ -17,10 +17,7 @@
     </environment>
 </head>
 <body>
-    @Html.Partial("_Menu")
     <div class="container body-content">
-        @RenderSection("Desktop", required: false)
-        @if (IsSectionDefined("Mobile")) { IgnoreSection("Mobile"); }
         @RenderBody()
         <hr />
         <footer>
@@ -42,7 +39,7 @@
         </script>
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
                 asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery&&window.jQuery.fn&&window.jQuery.fn.modal"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
                 crossorigin="anonymous"
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
@@ -50,9 +47,5 @@
     </environment>
 
     @RenderSection("Scripts", required: false)
-    <environment include="Development">
-        <script src="~/app/js/scripts1.js"></script>
-        <script src="~/app/js/scripts2.js"></script>
-    </environment>
 </body>
 </html>

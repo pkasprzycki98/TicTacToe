@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using TicTacToe.Models;
 using TicTacToe.Services;
 using Microsoft.Extensions.DependencyInjection;
+using TicTacToe.Services.Interfaces;
 
 namespace TicTacToe.Middlewares
 {

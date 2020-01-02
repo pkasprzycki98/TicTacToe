@@ -14,7 +14,7 @@ namespace TicTacToe.Models
 		public UserModel User2 { get; set; }
 		public IEnumerable<TurnModel> Turns { get; set; }
 		public UserModel Winner { get; set; }
-		public UserModel ActiveModel { get; set; }
+		public UserModel ActiveUser { get; set; }
 		public Guid WinnerId { get; set; }
 		public Guid ActiveUserId { get; set; }
 		public bool TurnFinished { get; set; }

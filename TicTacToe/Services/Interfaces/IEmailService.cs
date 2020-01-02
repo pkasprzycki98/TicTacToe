@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace TicTacToe.Services
+namespace TicTacToe.Services.Interfaces
 {
     public interface IEmailService
     {

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using TicTacToe.Options;
 using TicTacToe.Filters;
+using TicTacToe.Services.Interfaces;
 
 namespace TicTacToe
 {
@@ -35,7 +36,8 @@ namespace TicTacToe
 			services.AddMvc(o => o.Filters.Add(typeof(DetectMobileFilter)));
             services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, options => options.ResourcesPath = "Localization").AddDataAnnotationsLocalization();
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IGameInvitationService, GameInvitationService>();
+			services.AddSingleton<IGameInvitationService, GameInvitationService>();
+			services.AddSingleton<IGameSessionService, GameSessionService>();
             services.Configure<EmailServiceOptions>(_configuration.GetSection("Email"));
             services.AddEmailService(_hostingEnvironment, _configuration);
             services.AddRouting();
