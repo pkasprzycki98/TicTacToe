@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TicTacToe.Models;
-using TicTacToe.Services.Interfaces;
 
 namespace TicTacToe.Services
 {
@@ -31,15 +30,15 @@ namespace TicTacToe.Services
         public Task UpdateUser(UserModel userModel)
         {
             _userStore = new ConcurrentBag<UserModel>(_userStore.Where(u => u.Email != userModel.Email))
-        {
-            userModel
-        };
+                {
+                    userModel
+                };
             return Task.CompletedTask;
         }
 
-		public Task<IEnumerable<UserModel>> GetTopUsers(int numberOfUsers)
-		{
-			return Task.Run(() => (IEnumerable<UserModel>)_userStore.OrderBy(x => x.Score).Take(numberOfUsers).ToList());
-		}
-	}
+        public Task<IEnumerable<UserModel>> GetTopUsers(int numberOfUsers)
+        {
+            return Task.Run(() => (IEnumerable<UserModel>)_userStore.OrderBy(x => x.Score).Take(numberOfUsers).ToList());
+        }
+    }
 }

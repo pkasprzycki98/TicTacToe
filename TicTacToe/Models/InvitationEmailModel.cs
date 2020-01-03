@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 
 namespace TicTacToe.Models
 {
-    public class AccountModel
+    public class InvitationEmailModel
     {
-        public string Email { get; set; }
         public string DisplayName { get; set; }
+        public UserModel InvitedBy { get; set; }
+        public DateTime InvitedDate { get; set; }
+        public string ConfirmationUrl { get; set; }
     }
 }

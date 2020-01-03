@@ -7,7 +7,6 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using TicTacToe.Options;
-using TicTacToe.Services.Interfaces;
 
 namespace TicTacToe.Services
 {

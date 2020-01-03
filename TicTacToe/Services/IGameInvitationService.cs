@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using TicTacToe.Models;
 
-namespace TicTacToe.Services.Interfaces
+namespace TicTacToe.Services
 {
     public interface IGameInvitationService
     {
