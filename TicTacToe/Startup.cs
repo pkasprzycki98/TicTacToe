@@ -49,9 +49,9 @@ namespace TicTacToe
 			 .UseSqlServer(connectionString);
 			services.AddSingleton(dbContextOptionsbuilder.Options);
 
-			services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IGameInvitationService, GameInvitationService>();
-            services.AddSingleton<IGameSessionService, GameSessionService>();
+			services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IGameInvitationService, GameInvitationService>();
+            services.AddScoped<IGameSessionService, GameSessionService>();
 
             services.Configure<EmailServiceOptions>(_configuration.GetSection("Email"));
             services.AddEmailService(_hostingEnvironment, _configuration);
@@ -111,6 +111,8 @@ namespace TicTacToe
 
             app.UseWebSockets();
             app.UseCommunicationMiddleware();
+			app.UseStaticFiles();
+			app.UseAuthentication();
 
             var supportedCultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
             var localizationOptions = new RequestLocalizationOptions

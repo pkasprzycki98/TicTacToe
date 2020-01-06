@@ -11,7 +11,6 @@ namespace TicTacToe.Services
 {
 	public class UserService : IUserService
 	{
-		private static ConcurrentBag<UserModel> _userStore;
 		private DbContextOptions<GameDbContext> _dbContextOptions;
 
 		public UserService(DbContextOptions<GameDbContext> dbContextOptions)
