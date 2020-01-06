@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TicTacToe.Data;
 using TicTacToe.Models;
 
 namespace TicTacToe.Services
@@ -10,16 +12,21 @@ namespace TicTacToe.Services
     public class UserService : IUserService
     {
         private static ConcurrentBag<UserModel> _userStore;
+		private DbContextOptions<GameDbContext> _dbContextOptions;
 
-        static UserService()
+        public  UserService(DbContextOptions<GameDbContext> dbContextOptions)
         {
-            _userStore = new ConcurrentBag<UserModel>();
+			_dbContextOptions = dbContextOptions;
         }
 
-        public Task<bool> RegisterUser(UserModel userModel)
+        public async Task<bool> RegisterUser(UserModel userModel)
         {
-            _userStore.Add(userModel);
-            return Task.FromResult(true);
+			using (var db = new GameDbContext(_dbContextOptions))
+			{
+				db.UserModel.Add(userModel);
+				await db.SaveChangesAsync();
+				return true;
+			}
         }
 
         public Task<UserModel> GetUserByEmail(string email)

@@ -32,6 +32,14 @@
 @section Scripts{
 	<script>
         SetGameSession("@Model.Id", "@email");
-        EnableCheckTurnIsFinished();       
+        EnableCheckTurnIsFinished();
+        @if(email != Model.ActiveUser?.Email)
+        {
+            <text>DisableBoard(@Model.TurnNumber);</text>
+        }
+        else
+        {
+            <text>EnableBoard(@Model.TurnNumber);</text>
+        }
 	</script>
 }

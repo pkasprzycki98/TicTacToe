@@ -17,6 +17,8 @@ using Microsoft.Extensions.Configuration;
 using TicTacToe.Options;
 using TicTacToe.Filters;
 using TicTacToe.ViewEngines;
+using TicTacToe.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace TicTacToe
 {
@@ -32,10 +34,22 @@ namespace TicTacToe
 
         public void ConfigureCommonServices(IServiceCollection services)
         {
+		
             services.AddLocalization(options => options.ResourcesPath = "Localization");
             services.AddMvc(o => o.Filters.Add(typeof(DetectMobileFilter))).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, options => options.ResourcesPath = "Localization").AddDataAnnotationsLocalization();
 
-            services.AddSingleton<IUserService, UserService>();
+			var connectionString = _configuration.GetConnectionString("DefaultConnection");
+			services.AddEntityFrameworkSqlServer()
+				.AddDbContext<GameDbContext>((serviceProvider, options) =>
+					options.UseSqlServer(connectionString)
+							.UseInternalServiceProvider(serviceProvider)
+							);
+
+			var dbContextOptionsbuilder = new DbContextOptionsBuilder<GameDbContext>()
+			 .UseSqlServer(connectionString);
+			services.AddSingleton(dbContextOptionsbuilder.Options);
+
+			services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IGameInvitationService, GameInvitationService>();
             services.AddSingleton<IGameSessionService, GameSessionService>();
 
