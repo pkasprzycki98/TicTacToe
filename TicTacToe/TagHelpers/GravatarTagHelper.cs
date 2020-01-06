@@ -29,8 +29,15 @@ namespace TicTacToe.TagHelpers
             }
             else
             {
-                photo = File.ReadAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "no-photo.jpg"));
+				string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "no-photo.jpg");
+				if (File.Exists(filePath))
+					photo = File.ReadAllBytes(filePath);
             }
+			if (photo != null && photo.Length > 0)
+			{
+				output.TagName = "img";
+				output.Attributes.SetAttribute("src", $"data:image/jpeg;base64,{Convert.ToBase64String(photo)}");
+			}
 
             string base64String = Convert.ToBase64String(photo);
             output.TagName = "img";

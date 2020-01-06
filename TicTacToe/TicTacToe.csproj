@@ -189,6 +189,7 @@
     <Folder Include="Areas\Account\Data\" />
     <Folder Include="Areas\Account\Models\" />
     <Folder Include="logs\" />
+    <Folder Include="wwwroot\Emails\" />
   </ItemGroup>
 
 </Project>

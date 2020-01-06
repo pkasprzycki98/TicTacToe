@@ -15,21 +15,22 @@ using System.Threading.Tasks;
 
 namespace TicTacToe.ViewEngines
 {
-    public class EmailViewEngine
-    {
-        private readonly IRazorViewEngine _viewEngine;
-        private readonly ITempDataProvider _tempDataProvider;
-        private readonly IServiceProvider _serviceProvider;
+	public class EmailViewEngine
+	{
+		private readonly IRazorViewEngine _viewEngine;
+		private readonly ITempDataProvider _tempDataProvider;
+		private readonly IServiceProvider _serviceProvider;
 
-        public EmailViewEngine(
-            IRazorViewEngine viewEngine,
-            ITempDataProvider tempDataProvider,
-            IServiceProvider serviceProvider)
-        {
-            _viewEngine = viewEngine;
-            _tempDataProvider = tempDataProvider;
-            _serviceProvider = serviceProvider;
-        }
+		public EmailViewEngine(
+			IRazorViewEngine viewEngine,
+			ITempDataProvider tempDataProvider,
+			IServiceProvider serviceProvider)
+		{
+			_viewEngine = viewEngine;
+			_tempDataProvider = tempDataProvider;
+			_serviceProvider = serviceProvider;
+		}
+		
         private IView FindView(ActionContext actionContext, string viewName)
         {
             var getViewResult = _viewEngine.GetView(executingFilePath: null, viewPath: viewName, isMainPage: true);

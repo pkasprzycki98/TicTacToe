@@ -9,7 +9,8 @@
     "outputFileName": "wwwroot/js/site.js",
     "inputFiles": [
       "wwwroot/app/js/scripts1.js",
-      "wwwroot/app/js/scripts2.js"
+			"wwwroot/app/js/scripts2.js",
+			"wwwroot/app/js/GameSession.js"
     ],
     "sourceMap": true,
     "includeInProject": true

@@ -17,8 +17,7 @@ namespace TicTacToe.Services
 
         public Task<GameInvitationModel> Add(GameInvitationModel gameInvitationModel)
         {
-            gameInvitationModel.Id = Guid.NewGuid();
-            _gameInvitations.Add(gameInvitationModel);
+			_gameInvitations.Add(gameInvitationModel);
             return Task.FromResult(gameInvitationModel);
         }
         public Task Update(GameInvitationModel gameInvitationModel)
