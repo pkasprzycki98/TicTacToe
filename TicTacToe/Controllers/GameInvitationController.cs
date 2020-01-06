@@ -58,33 +58,40 @@ namespace TicTacToe.Controllers
                 }
 
                 var invitation = gameInvitationService.Add(gameInvitationModel).Result;
-                return RedirectToAction("GameInvitationConfirmation", new { id = gameInvitationModel.Id });
+                return RedirectToAction("GameInvitationConfirmation", new { id = invitation.Id });
             }
             return View(gameInvitationModel);
         }
 
         [HttpGet]
-        public IActionResult GameInvitationConfirmation(Guid id, [FromServices]IGameInvitationService gameInvitationService)
+        public async Task<IActionResult> GameInvitationConfirmation(Guid id, [FromServices]IGameInvitationService gameInvitationService)
         {
-            var gameInvitation = gameInvitationService.Get(id).Result;
-            return View(gameInvitation);
+            return await Task.Run(() =>
+            {
+                var gameInvitation = gameInvitationService.Get(id).Result;
+                return View(gameInvitation);
+            });
         }
 
         [HttpGet]
         public async Task<IActionResult> ConfirmGameInvitation(Guid id, [FromServices]IGameInvitationService gameInvitationService)
         {
-			var gameInvitation = await gameInvitationService.Get(id);
-			gameInvitation.IsConfirmed = true;
-			gameInvitation.ConfirmationDate = DateTime.Now;
-			await gameInvitationService.Update(gameInvitation);
-			Request.HttpContext.Session.SetString("email", gameInvitation.EmailTo);
-			await _userService.RegisterUser(new UserModel
-			{
-				Email = gameInvitation.EmailTo,
-				EmailConfirmationDate = DateTime.Now,
-				IsEmailConfirmed = true
-			});
-			return RedirectToAction("Index", "GameSession", new { id });
+            var gameInvitation = await gameInvitationService.Get(id);
+            gameInvitation.IsConfirmed = true;
+            gameInvitation.ConfirmationDate = DateTime.Now;
+            await gameInvitationService.Update(gameInvitation);
+            Request.HttpContext.Session.SetString("email", gameInvitation.EmailTo);
+            await _userService.RegisterUser(new UserModel
+            {
+                Email = gameInvitation.EmailTo,
+                EmailConfirmationDate = DateTime.Now,
+                EmailConfirmed = true,
+                FirstName = "",
+                LastName = "",
+                Password = "Azerty123!",
+                UserName = gameInvitation.EmailTo
+            }, true);
+            return RedirectToAction("Index", "GameSession", new { id });
         }
     }
 }

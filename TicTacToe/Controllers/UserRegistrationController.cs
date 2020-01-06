@@ -23,31 +23,20 @@ namespace TicTacToe.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return await Task.Run(() =>
+            {
+                return View();
+            });
         }
-		[HttpGet]
-		public async Task<IActionResult> ConfirmEmail(string email)
-		{
-			var user = await _userService.GetUserByEmail(email);
-			if (user != null)
-			{
-				user.IsEmailConfirmed = true;
-				user.EmailConfirmationDate = DateTime.Now;
-				await _userService.UpdateUser(user);
-				return RedirectToAction("Index", "Home");
-			}
-			return BadRequest();
 
-		}
-
-		[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Index(UserModel userModel)
         {
             if (ModelState.IsValid)
             {
-                await _userService.RegisterUser(userModel);
+                await _userService.RegisterUser(userModel, true);
                 return RedirectToAction(nameof(EmailConfirmation), new { userModel.Email });
             }
             else
@@ -65,7 +54,7 @@ namespace TicTacToe.Controllers
             {
                 Action = "ConfirmEmail",
                 Controller = "UserRegistration",
-                Values = new { email },
+                Values = new { email, code = await _userService.GetEmailConfirmationCode(user) },
                 Protocol = Request.Scheme,
                 Host = Request.Host.ToString()
             };
@@ -94,6 +83,17 @@ namespace TicTacToe.Controllers
             ViewBag.Email = email;
 
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string email, string code)
+        {
+            var confirmed = await _userService.ConfirmEmail(email, code);
+
+            if (!confirmed)
+                return BadRequest();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

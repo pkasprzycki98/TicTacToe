@@ -12,7 +12,7 @@ namespace TicTacToe.Data
         public GameDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<GameDbContext>();
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=TicTacToe;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=TicTacToe;Trusted_Connection=True;MultipleActiveResultSets=true");
             return new GameDbContext(optionsBuilder.Options);
         }
     }

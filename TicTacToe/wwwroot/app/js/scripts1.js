@@ -3,7 +3,7 @@ function EmailConfirmation(email) {
     if (window.WebSocket) {
         openSocket(email, "Email");
     }
-    else {      
+    else {
         interval = setInterval(() => {
             CheckEmailConfirmationStatus(email);
         }, 5000);

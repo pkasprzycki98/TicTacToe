@@ -9,21 +9,24 @@ namespace TicTacToe.Models
 {
     public class GameSessionModel
     {
-		[Key]
+        [Key]
         public Guid Id { get; set; }
         public Guid UserId1 { get; set; }
         public Guid UserId2 { get; set; }
-		[ForeignKey(nameof(UserId1))]
+
+        [ForeignKey(nameof(UserId1))]
         public UserModel User1 { get; set; }
         public UserModel User2 { get; set; }
         public IEnumerable<TurnModel> Turns { get; set; }
-		[NotMapped]
+
+        [NotMapped]
         public UserModel Winner { get; set; }
-		[NotMapped]
+
+        [NotMapped]
         public UserModel ActiveUser { get; set; }
         public Guid WinnerId { get; set; }
         public Guid ActiveUserId { get; set; }
         public bool TurnFinished { get; set; }
-		public int TurnNumber { get; set; }
+        public int TurnNumber { get; set; }
     }
 }

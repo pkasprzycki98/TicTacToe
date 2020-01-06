@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Halcyon.Mvc" Version="2.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
     <PackageReference Include="Sendgrid" Version="9.9.0" />
@@ -25,55 +26,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>UserModel.resx</DependentUpon>
     </Compile>
-    <Compile Update="Localization\Views\GameInvitation - kopiować.GameInvitationConfirmation.Designer.cs">
-      <DependentUpon>GameInvitation.GameInvitationConfirmation.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Localization\Views\GameInvitation - kopiować.GameInvitationConfirmation.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>GameInvitation.GameInvitationConfirmation.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Localization\Views\GameInvitation - kopiować.index.Designer.cs">
-      <DependentUpon>GameInvitation.Index.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Localization\Views\GameInvitation - kopiować.index.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>GameInvitation.Index.resx</DependentUpon>
-    </Compile>
     <Compile Update="Localization\Views\GameInvitation.GameInvitationConfirmation.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>GameInvitation.GameInvitationConfirmation.resx</DependentUpon>
     </Compile>
-    <Compile Update="Localization\Views\GameInvitation.Index.Designer.cs">
+    <Compile Update="Localization\Views\GameInvitation.index.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>GameInvitation.Index.resx</DependentUpon>
     </Compile>
-    <Compile Update="Localization\Views\Home - kopiować.Index.Designer.cs">
-      <DependentUpon>Home.Index.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Localization\Views\Home - kopiować.Index.Designer.cs">
+    <Compile Update="Localization\Views\Home.Index.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Home.Index.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Localization\Views\Leaderboard - kopiować.Index.Designer.cs">
-      <DependentUpon>Leaderboard.Index.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Localization\Views\Leaderboard - kopiować.Index.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Leaderboard.Index.resx</DependentUpon>
     </Compile>
     <Compile Update="Localization\Views\Leaderboard.Index.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -81,19 +47,9 @@
       <DependentUpon>Leaderboard.Index.resx</DependentUpon>
     </Compile>
     <Compile Update="Localization\Views\UserRegistration.EmailConfirmation.Designer.cs">
-      <DependentUpon>UserRegistration.EmailConfirmation.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Localization\Views\UserRegistration.EmailConfirmation.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>UserRegistration.EmailConfirmation.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Localization\Views\UserRegistration.Index.Designer.cs">
-      <DependentUpon>UserRegistration.Index.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Localization\Views\UserRegistration.Index.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -117,14 +73,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>UserModel.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Localization\Views\GameInvitation.Index.pl.resx">
-      <LastGenOutput>GameInvitation.Index.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\Views\GameInvitation.GameInvitationConfirmation.pl.resx">
-      <LastGenOutput>GameInvitation.GameInvitationConfirmation.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Localization\Views\GameInvitation.GameInvitationConfirmation.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
@@ -139,20 +87,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GameInvitation.Index.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Localization\Views\Home.Index.pl.resx">
-      <LastGenOutput>Home.Index.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Localization\Views\Home.Index.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Localization\Views\Home.Index.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Home - kopiować.Index.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\Views\Leaderboard.Index.pl.resx">
-      <LastGenOutput>Leaderboard.Index.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Home.Index.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Localization\Views\Leaderboard.Index.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -160,14 +100,6 @@
     <EmbeddedResource Update="Localization\Views\Leaderboard.Index.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Leaderboard.Index.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\Views\UserRegistration.Index.pl.resx">
-      <LastGenOutput>UserRegistration.Index.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Localization\Views\UserRegistration.EmailConfirmation.pl.resx">
-      <LastGenOutput>UserRegistration.EmailConfirmation.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Localization\Views\UserRegistration.EmailConfirmation.fr.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -188,8 +120,6 @@
   <ItemGroup>
     <Folder Include="Areas\Account\Data\" />
     <Folder Include="Areas\Account\Models\" />
-    <Folder Include="logs\" />
-    <Folder Include="wwwroot\Emails\" />
   </ItemGroup>
 
 </Project>

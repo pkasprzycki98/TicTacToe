@@ -20,6 +20,17 @@ namespace TicTacToe.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId");
+
+                    b.Property<Guid>("RoleId");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.ToTable("UserRoleModel");
+                });
+
             modelBuilder.Entity("TicTacToe.Models.GameInvitationModel", b =>
                 {
                     b.Property<Guid>("Id")
@@ -67,7 +78,25 @@ namespace TicTacToe.Migrations
 
                     b.HasIndex("UserId1");
 
+                    b.HasIndex("WinnerId");
+
                     b.ToTable("GameSessionModel");
+                });
+
+            modelBuilder.Entity("TicTacToe.Models.RoleModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ConcurrencyStamp");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("NormalizedName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RoleModel");
                 });
 
             modelBuilder.Entity("TicTacToe.Models.TurnModel", b =>
@@ -96,28 +125,69 @@ namespace TicTacToe.Migrations
                     b.ToTable("TurnModel");
                 });
 
+            modelBuilder.Entity("TicTacToe.Models.TwoFactorCodeModel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("TokenCode");
+
+                    b.Property<string>("TokenProvider");
+
+                    b.Property<Guid>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TwoFactorCodeModel");
+                });
+
             modelBuilder.Entity("TicTacToe.Models.UserModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("ConcurrencyStamp");
+
+                    b.Property<string>("Email");
 
                     b.Property<DateTime?>("EmailConfirmationDate");
+
+                    b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("FirstName")
                         .IsRequired();
 
-                    b.Property<bool>("IsEmailConfirmed");
-
                     b.Property<string>("LastName")
                         .IsRequired();
+
+                    b.Property<bool>("LockoutEnabled");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NormalizedEmail");
+
+                    b.Property<string>("NormalizedUserName");
 
                     b.Property<string>("Password")
                         .IsRequired();
 
+                    b.Property<string>("PasswordHash");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<bool>("PhoneNumberConfirmed");
+
                     b.Property<int>("Score");
+
+                    b.Property<string>("SecurityStamp");
+
+                    b.Property<bool>("TwoFactorEnabled");
+
+                    b.Property<string>("UserName");
 
                     b.HasKey("Id");
 
@@ -143,6 +213,11 @@ namespace TicTacToe.Migrations
                         .WithMany()
                         .HasForeignKey("UserId1")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TicTacToe.Models.UserModel", "Winner")
+                        .WithMany()
+                        .HasForeignKey("WinnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("TicTacToe.Models.TurnModel", b =>
@@ -151,6 +226,14 @@ namespace TicTacToe.Migrations
                         .WithMany("Turns")
                         .HasForeignKey("GameSessionModelId");
 
+                    b.HasOne("TicTacToe.Models.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TicTacToe.Models.TwoFactorCodeModel", b =>
+                {
                     b.HasOne("TicTacToe.Models.UserModel", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
