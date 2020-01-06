@@ -8,20 +8,25 @@ using TicTacToe.Models;
 
 namespace TicTacToe.Data
 {
-	public class GameDbContext : DbContext
-	{
-		
-		public DbSet<GameInvitationModel> GameInvitationModels { get; set; }
-		public DbSet<GameSessionModel> GameSessionModels { get; set; }
-		public DbSet<TurnModel> TurnModels { get; set; }
-		public DbSet<UserModel> UserModel { get; set; }
-		public GameDbContext(DbContextOptions<GameDbContext> dbContextOptions) : base(dbContextOptions)
-		{
+    public class GameDbContext : DbContext
+    {
+        public DbSet<GameInvitationModel> GameInvitationModels { get; set; }
+        public DbSet<GameSessionModel> GameSessionModels { get; set; }
+        public DbSet<TurnModel> TurnModels { get; set; }
+        public DbSet<UserModel> UserModel { get; set; }
 
-		}
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			modelBuilder.RemovePluralizingTableNameConvetion();
-		}
- 	}
+        public GameDbContext(DbContextOptions<GameDbContext> dbContextOptions) : base(dbContextOptions)
+        {
+
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.RemovePluralizingTableNameConvention();
+            modelBuilder.Entity(typeof(GameSessionModel))
+            .HasOne(typeof(UserModel), "User2")
+            .WithMany()
+            .HasForeignKey("User2Id").OnDelete(DeleteBehavior.Restrict);
+        }
+    }
 }

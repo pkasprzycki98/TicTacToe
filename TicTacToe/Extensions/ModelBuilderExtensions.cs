@@ -10,7 +10,7 @@ namespace TicTacToe.Extensions
 {
 	public static class ModelBuilderExtensions
 	{
-		public static void RemovePluralizingTableNameConvetion(this ModelBuilder modelBuilder)
+		public static void RemovePluralizingTableNameConvention(this ModelBuilder modelBuilder)
 		{
 			foreach (IMutableEntityType entity in modelBuilder.Model.GetEntityTypes())
 			{
