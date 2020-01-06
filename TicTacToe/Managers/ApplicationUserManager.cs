@@ -68,6 +68,22 @@ namespace TicTacToe.Managers
 				return IdentityResult.Success;
 			}
 		}
+		public override async Task<IdentityResult> ConfirmEmailAsync(UserModel user, string token)
+		{
+			var isValide = await base.VerifyUserTokenAsync(user, Options.Tokens.EmailConfirmationTokenProvider, ConfirmEmailTokenPurpose, token);
+			if (isValide)
+			{
+				using (var dbContext = new GameDbContext(_dbContextOptions))
+				{
+					var current = await dbContext.UserModel.FindAsync(user.Id);
+					current.EmailConfirmationDate = DateTime.Now;
+					current.EmailConfirmed = true;
+					await dbContext.SaveChangesAsync();
+					return IdentityResult.Success;
+				}
+			}
+			return IdentityResult.Failed();
+		}
 
 
 	}
