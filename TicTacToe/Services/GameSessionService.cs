@@ -26,20 +26,24 @@ namespace TicTacToe.Services
             return Task.Run(() => _sessions.FirstOrDefault(x => x.Id == gameSessionId));
         }
 
-        public async Task<GameSessionModel> CreateGameSession(Guid invitationId, UserModel invitedBy, UserModel invitedPlayer)
+        public async Task<GameSessionModel> CreateGameSession(Guid invitationId, string invitedByEmail, string invitedPlayerEmail)
         {
-            var session = new GameSessionModel
+            var invitedBy = await _UserService.GetUserByEmail(invitedByEmail);
+            var invitedPlayer = await _UserService.GetUserByEmail(invitedPlayerEmail);
+
+            GameSessionModel session = new GameSessionModel
             {
                 User1 = invitedBy,
                 User2 = invitedPlayer,
                 Id = invitationId,
                 ActiveUser = invitedBy
             };
+
             _sessions.Add(session);
             return session;
         }
 
-        public async Task<GameSessionModel> AddTurn(Guid id, UserModel user, int x, int y)
+        public async Task<GameSessionModel> AddTurn(Guid id, string email, int x, int y)
         {
             List<Models.TurnModel> turns;
             var gameSession = _sessions.FirstOrDefault(session => session.Id == id);
@@ -50,15 +54,15 @@ namespace TicTacToe.Services
 
             turns.Add(new TurnModel
             {
-                User = user,
+                User = await _UserService.GetUserByEmail(email),
                 X = x,
                 Y = y,
-                IconNumber = user.Email == gameSession.User1?.Email ? "1" : "2"
+                IconNumber = email == gameSession.User1?.Email ? "1" : "2"
             });
 
             gameSession.Turns = turns;
             gameSession.TurnNumber = gameSession.TurnNumber + 1;
-            if (gameSession.User1?.Email == user.Email)
+            if (gameSession.User1?.Email == email)
                 gameSession.ActiveUser = gameSession.User2;
             else
                 gameSession.ActiveUser = gameSession.User1;

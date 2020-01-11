@@ -17,9 +17,12 @@ namespace TicTacToe.Middlewares
     public class CommunicationMiddleware
     {
         private readonly RequestDelegate _next;
-        public CommunicationMiddleware(RequestDelegate next)
+        private readonly IUserService _userService;
+
+        public CommunicationMiddleware(RequestDelegate next, IUserService userService)
         {
             _next = next;
+            _userService = userService;
         }
 
         public async Task Invoke(HttpContext context)
@@ -60,37 +63,26 @@ namespace TicTacToe.Middlewares
             }
         }
 
-        private async Task ProcessEmailConfirmation(HttpContext context, WebSocket currentSocket, CancellationToken ct, string email)
-        {
-            var userService = context.RequestServices.GetRequiredService<IUserService>();
-            var user = await userService.GetUserByEmail(email);
-            while (!ct.IsCancellationRequested && !currentSocket.CloseStatus.HasValue && user?.IsEmailConfirmed == false)
-            {
-                await SendStringAsync(currentSocket, "WaitEmailConfirmation", ct);
-                await Task.Delay(500);
-                user = await userService.GetUserByEmail(email);
-            }
-
-            if (user.IsEmailConfirmed)
-            {
-                await SendStringAsync(currentSocket, "OK", ct);
-            }
-        }
-
         private async Task ProcessEmailConfirmation(HttpContext context)
         {
-            var userService = context.RequestServices.GetRequiredService<IUserService>();
             var email = context.Request.Query["email"];
-
-            UserModel user = await userService.GetUserByEmail(email);
+            var user = await _userService.GetUserByEmail(email);
 
             if (string.IsNullOrEmpty(email))
             {
                 await context.Response.WriteAsync("Nieprawidłowe żądanie: Wymagany jest adres e-mail");
             }
-            else if ((await userService.GetUserByEmail(email)).IsEmailConfirmed)
+            else if ((await _userService.GetUserByEmail(email)).IsEmailConfirmed)
             {
                 await context.Response.WriteAsync("OK");
+            }
+            else
+            {
+                await context.Response.WriteAsync("Oczekiwanie na potwierdzenie adresu e-mail");
+                user.IsEmailConfirmed = true;
+                user.EmailConfirmationDate = DateTime.Now;
+                _userService.UpdateUser(user).Wait();
+
             }
         }
 
@@ -124,6 +116,22 @@ namespace TicTacToe.Middlewares
                 {
                     return await reader.ReadToEndAsync();
                 }
+            }
+        }
+
+        public async Task ProcessEmailConfirmation(HttpContext context, WebSocket currentSocket, CancellationToken ct, string email)
+        {
+            var user = await _userService.GetUserByEmail(email);
+            while (!ct.IsCancellationRequested && !currentSocket.CloseStatus.HasValue && user?.IsEmailConfirmed == false)
+            {
+                await SendStringAsync(currentSocket, "WaitEmailConfirmation", ct);
+                await Task.Delay(500);
+                user = await _userService.GetUserByEmail(email);
+            }
+
+            if (user.IsEmailConfirmed)
+            {
+                await SendStringAsync(currentSocket, "OK", ct);
             }
         }
 

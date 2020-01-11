@@ -21,9 +21,6 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Halcyon.Web.HAL.Json;
 using TicTacToe.Data;
 using Microsoft.EntityFrameworkCore;
-using TicTacToe.Managers;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace TicTacToe
 {
@@ -48,15 +45,9 @@ namespace TicTacToe
                 o.OutputFormatters.Add(new JsonHalOutputFormatter(new string[] { "application/hal+json", "application/vnd.example.hal+json", "application/vnd.example.hal.v1+json" }));
             }).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, options => options.ResourcesPath = "Localization").AddDataAnnotationsLocalization();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdministratorAccessLevelPolicy", policy => policy.RequireClaim("AccessLevel", "Administrator"));
-            });
-
-            services.AddTransient<ApplicationUserManager>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IGameInvitationService, GameInvitationService>();
-            services.AddScoped<IGameSessionService, GameSessionService>();            
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IGameInvitationService, GameInvitationService>();
+            services.AddSingleton<IGameSessionService, GameSessionService>();
 
             var connectionString = _configuration.GetConnectionString("DefaultConnection");
             services.AddEntityFrameworkSqlServer()
@@ -65,11 +56,9 @@ namespace TicTacToe
                             .UseInternalServiceProvider(serviceProvider)
                             );
 
-            services.AddScoped(typeof(DbContextOptions<GameDbContext>), (serviceProvider) =>
-            {
-                return new DbContextOptionsBuilder<GameDbContext>()
-                    .UseSqlServer(connectionString).Options;
-            });
+            var dbContextOptionsbuilder = new DbContextOptionsBuilder<GameDbContext>()
+                .UseSqlServer(connectionString);
+            services.AddSingleton(dbContextOptionsbuilder.Options);
 
             services.Configure<EmailServiceOptions>(_configuration.GetSection("Email"));
             services.AddEmailService(_hostingEnvironment, _configuration);
@@ -80,28 +69,6 @@ namespace TicTacToe
             services.AddSession(o =>
             {
                 o.IdleTimeout = TimeSpan.FromMinutes(30);
-            });
-
-            services.AddIdentity<UserModel, RoleModel>(options =>
-            {
-                options.Password.RequiredLength = 1;
-                options.Password.RequiredUniqueChars = 0;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.SignIn.RequireConfirmedEmail = false;
-            }).AddEntityFrameworkStores<GameDbContext>()
-            .AddDefaultTokenProviders();
-
-            services.AddAuthentication(options => {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie().AddFacebook(facebook =>
-            {
-                facebook.AppId = "123";
-                facebook.AppSecret = "123";
-                facebook.ClientId = "123";
-                facebook.ClientSecret = "123";
             });
         }
 
@@ -133,7 +100,6 @@ namespace TicTacToe
             }
 
             app.UseStaticFiles();
-            app.UseAuthentication();
             app.UseSession();
 
             var routeBuilder = new RouteBuilder(app);
@@ -178,12 +144,9 @@ namespace TicTacToe
 
             app.UseStatusCodePages("text/plain", "Blad HTTP - kod odpowiedzi: {0}");
 
-            var provider = app.ApplicationServices;
-            var scopeFactory = provider.GetRequiredService<IServiceScopeFactory>();
-            using (var scope = scopeFactory.CreateScope())
-            using (var context = scope.ServiceProvider.GetRequiredService<GameDbContext>())
+            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                context.Database.Migrate();
+                scope.ServiceProvider.GetRequiredService<GameDbContext>().Database.Migrate();
             }
         }
     }
