@@ -11,14 +11,14 @@ namespace TicTacToe.Controllers
     {
         public IActionResult Index()
         {
-            var culture = Request.HttpContext.Session.GetString("culture");
-            ViewBag.Language = culture;
+            var culture = Request.HttpContext.Session.GetString("culture"); // pobranie z sesji języka
+            ViewBag.Language = culture; // kolekcja typu słownik która przechowuje wartośc culture
             return View();
         }
 
         public IActionResult SetCulture(string culture)
         {
-            Request.HttpContext.Session.SetString("culture", culture);
+            Request.HttpContext.Session.SetString("culture", culture); // ustawienie języka na "PL-pl" lub "ENG-eng"
             return RedirectToAction("Index");
         }
 

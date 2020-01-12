@@ -9,27 +9,31 @@ using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using TicTacToe.Models;
+using Microsoft.EntityFrameworkCore;
+using TicTacToe.Data;
 
 namespace TicTacToe.Controllers
 {
     public class GameSessionController : Controller
     {
         private IGameSessionService _gameSessionService;
-        public GameSessionController(IGameSessionService gameSessionService)
+		private DbContextOptions<GameDbContext> _dbContextOptions;
+        public GameSessionController(IGameSessionService gameSessionService, DbContextOptions<GameDbContext> dbContextOptions) // wstrzyknięcie zależności 
         {
+			_dbContextOptions = dbContextOptions;
             _gameSessionService = gameSessionService;
         }
 
         public async Task<IActionResult> Index(Guid id)
         {
-            var session = await _gameSessionService.GetGameSession(id);
-            if (session == null)
+            var session = await _gameSessionService.GetGameSession(id); // pobranie sesji z bazy danych 
+            if (session == null) // jeżeli sesja jest to stwórz nową sesje
             {
-                var gameInvitationService = Request.HttpContext.RequestServices.GetService<IGameInvitationService>();
-                var invitation = await gameInvitationService.Get(id);
-                session = await _gameSessionService.CreateGameSession(invitation.Id, invitation.InvitedBy, invitation.EmailTo);
+                var gameInvitationService = Request.HttpContext.RequestServices.GetService<IGameInvitationService>(); // //Pobiera lub ustawia IServiceProvider, który zapewnia dostęp do kontenera usług żądania.
+				var invitation = await gameInvitationService.Get(id); //pobranie zaproszenia z bazy danych zaproszeń
+                session = await _gameSessionService.CreateGameSession(invitation.Id, invitation.InvitedBy, invitation.EmailTo); // stworzenia nowej sesji gry i przekazanie do niej dancyh invitation.Id, inivtation.InvitedBy, invitation.EmialTo
             }
-            return View(session);
+            return View(session); // zwrócenie widoku sesji
         }
 
         [Produces("application/json")]
@@ -100,23 +104,46 @@ namespace TicTacToe.Controllers
                 var session = await _gameSessionService.GetGameSession(sessionId);
                 if (session != null)
                 {
-                    if (session.Turns.Count() == 9)
-                        return Ok("Gra zakończyła się remisem.");
+
+					if (session.Turns.Count() == 9)
+					{
+						using (var context = new GameDbContext(_dbContextOptions))
+						{
+							context.GameSessionModels.Add(session);
+							await context.SaveChangesAsync();
+						}
+						return Ok("Gra zakończyła się remisem.");
+					}
+
+					
 
                     var userTurns = session.Turns.Where(x => x.User == session.User1).ToList();
                     var user1Won = CheckIfUserHasWon(session.User1?.Email, userTurns);
 
                     if (user1Won)
                     {
-                        return Ok($"{session.User1.Email} wygrał grę.");
+						using (var context = new GameDbContext(_dbContextOptions))
+						{
+							context.GameSessionModels.Add(session);
+							await context.SaveChangesAsync();
+						}
+							return Ok($"{session.User1.Email} wygrał grę.");
                     }
                     else
                     {
                         userTurns = session.Turns.Where(x => x.User == session.User2).ToList();
                         var user2Won = CheckIfUserHasWon(session.User2?.Email, userTurns);
 
-                        if (user2Won)
-                            return Ok($"{session.User2.Email} wygrał grę.");
+						if (user2Won)
+						{
+							using (var context = new GameDbContext(_dbContextOptions))
+							{
+								context.GameSessionModels.Add(session);
+								await context.SaveChangesAsync();
+							}
+							return Ok($"{session.User2.Email} wygrał grę.");
+						}
+                          
                         else
                             return Ok("");
                     }

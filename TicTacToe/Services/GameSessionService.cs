@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TicTacToe.Data;
 using TicTacToe.Models;
 
 namespace TicTacToe.Services
@@ -10,9 +12,11 @@ namespace TicTacToe.Services
     public class GameSessionService : IGameSessionService
     {
         private static ConcurrentBag<GameSessionModel> _sessions;
+		private DbContextOptions<GameDbContext> GameDbContext;
         private IUserService _UserService;
-        public GameSessionService(IUserService userService)
+        public GameSessionService(IUserService userService, DbContextOptions<GameDbContext> dbContextOptions)
         {
+			GameDbContext = dbContextOptions;
             _UserService = userService;
         }
 
@@ -38,9 +42,11 @@ namespace TicTacToe.Services
                 Id = invitationId,
                 ActiveUser = invitedBy
             };
-
+			
             _sessions.Add(session);
-            return session;
+
+			
+				return session;
         }
 
         public async Task<GameSessionModel> AddTurn(Guid id, string email, int x, int y)
@@ -72,7 +78,14 @@ namespace TicTacToe.Services
                 {
                     gameSession
                 };
-            return gameSession;
+			using (var context = new GameDbContext(GameDbContext))
+			{
+				var sess = context.GameSessionModels.FirstOrDefault(u => u.Id == id);
+				sess = gameSession;
+				context.TurnModels.AddRange(turns);
+				context.SaveChanges();
+			}
+				return gameSession;
         }
     }
 }
