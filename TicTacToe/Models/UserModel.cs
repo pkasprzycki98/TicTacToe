@@ -29,5 +29,8 @@ namespace TicTacToe.Models
         public bool IsEmailConfirmed { get; set; }
         public System.DateTime? EmailConfirmationDate { get; set; }
         public int Score { get; set; }
+
+		public delegate void HaloAlo(int email);
+
     }
 }

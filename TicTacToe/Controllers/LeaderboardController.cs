@@ -12,13 +12,13 @@ namespace TicTacToe.Controllers
         private IUserService _userService;
         public LeaderboardController(IUserService userService)
         {
-            _userService = userService; 
+            _userService = userService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var users = await _userService.GetTopUsers(10);  // pobranie 10 najlepszych graczy
-            return View(users); // wyswietelnie listy najlepszych graczy
+            var users = await _userService.GetTopUsers(10);
+            return View(users);
         }
     }
 }

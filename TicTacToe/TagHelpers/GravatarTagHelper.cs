@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace TicTacToe.TagHelpers
 {
     [HtmlTargetElement("Gravatar")]
-    public class GravatarTagHelper : TagHelper
+    public class GravatarTagHelper : TagHelper // Klasa która pobiera avatar ze zewnętrznego api
     {
         private ILogger<GravatarTagHelper> _logger;
         public GravatarTagHelper(ILogger<GravatarTagHelper> logger)

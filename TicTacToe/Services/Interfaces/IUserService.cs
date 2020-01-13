@@ -10,5 +10,6 @@ namespace TicTacToe.Services
         Task<UserModel> GetUserByEmail(string email);
         Task UpdateUser(UserModel user);
         Task<IEnumerable<UserModel>> GetTopUsers(int numberOfUsers);
+		
     }
 }

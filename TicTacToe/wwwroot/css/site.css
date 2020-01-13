@@ -16,7 +16,7 @@ textarea {
     max-width: 280px;
 }
 
-/* Style pomocników walidacji */
+/* style pomocników walidacji */
 .field-validation-error {
     color: #b94a48;
 }

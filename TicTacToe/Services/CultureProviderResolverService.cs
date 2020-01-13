@@ -13,7 +13,7 @@ namespace TicTacToe.Services
         private static readonly string _culturePrefix = "c=";
         private static readonly string _uiCulturePrefix = "uic=";
 
-        public override async Task<ProviderCultureResult> DetermineProviderCultureResult(HttpContext httpContext)
+        public override async Task<ProviderCultureResult> DetermineProviderCultureResult(HttpContext httpContext) // ustala jaki jest wybrany język
         {
             if (GetCultureFromQueryString(httpContext, out string culture))
                 return new ProviderCultureResult(culture, culture);
@@ -27,7 +27,7 @@ namespace TicTacToe.Services
             return await NullProviderCultureResult;
         }
 
-        private bool GetCultureFromQueryString(HttpContext httpContext, out string culture)
+        private bool GetCultureFromQueryString(HttpContext httpContext, out string culture) // pobiera język z url
         {
             if (httpContext == null)
             {
@@ -45,7 +45,7 @@ namespace TicTacToe.Services
             return true;
         }
 
-        private bool GetCultureFromCookie(HttpContext httpContext, out string culture)
+        private bool GetCultureFromCookie(HttpContext httpContext, out string culture) // pobiera jezyk z Cookie
         {
             if (httpContext == null)
             {
@@ -63,7 +63,7 @@ namespace TicTacToe.Services
             return !string.IsNullOrEmpty(culture);
         }
 
-        public static string ParseCookieValue(string value)
+        public static string ParseCookieValue(string value) // parsuje ciasteczka aby odpowiednio je odczytywać
         {
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -104,7 +104,7 @@ namespace TicTacToe.Services
             return cultureName;
         }
 
-        private bool GetCultureFromSession(HttpContext httpContext, out string culture)
+        private bool GetCultureFromSession(HttpContext httpContext, out string culture) // pobranie języka z sesji
         {
             culture = httpContext.Session.GetString("culture"); ;
             return !string.IsNullOrEmpty(culture);

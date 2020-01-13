@@ -1,22 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TicTacToe.Data;
 using TicTacToe.Models;
 
 namespace TicTacToe.Services
 {
     public class GameSessionService : IGameSessionService
     {
-        private static ConcurrentBag<GameSessionModel> _sessions;
-		private DbContextOptions<GameDbContext> GameDbContext;
-        private IUserService _UserService;
-        public GameSessionService(IUserService userService, DbContextOptions<GameDbContext> dbContextOptions)
+        private static ConcurrentBag<GameSessionModel> _sessions; //Reprezentuje bezpieczną wątkowo, nieuporządkowaną kolekcję obiektów
+		private IUserService _UserService;
+        public GameSessionService(IUserService userService)
         {
-			GameDbContext = dbContextOptions;
             _UserService = userService;
         }
 
@@ -27,10 +23,10 @@ namespace TicTacToe.Services
 
         public Task<GameSessionModel> GetGameSession(Guid gameSessionId)
         {
-            return Task.Run(() => _sessions.FirstOrDefault(x => x.Id == gameSessionId));
+            return Task.Run(() => _sessions.FirstOrDefault(x => x.Id == gameSessionId)); // delegat
         }
 
-        public async Task<GameSessionModel> CreateGameSession(Guid invitationId, string invitedByEmail, string invitedPlayerEmail)
+        public async Task<GameSessionModel> CreateGameSession(Guid invitationId, string invitedByEmail, string invitedPlayerEmail) // stworzenie sesji gry
         {
             var invitedBy = await _UserService.GetUserByEmail(invitedByEmail);
             var invitedPlayer = await _UserService.GetUserByEmail(invitedPlayerEmail);
@@ -42,14 +38,12 @@ namespace TicTacToe.Services
                 Id = invitationId,
                 ActiveUser = invitedBy
             };
-			
-            _sessions.Add(session);
 
-			
-				return session;
+            _sessions.Add(session);
+            return session;
         }
 
-        public async Task<GameSessionModel> AddTurn(Guid id, string email, int x, int y)
+        public async Task<GameSessionModel> AddTurn(Guid id, string email, int x, int y) //dodanie tury do bazy danych
         {
             List<Models.TurnModel> turns;
             var gameSession = _sessions.FirstOrDefault(session => session.Id == id);
@@ -78,14 +72,7 @@ namespace TicTacToe.Services
                 {
                     gameSession
                 };
-			using (var context = new GameDbContext(GameDbContext))
-			{
-				var sess = context.GameSessionModels.FirstOrDefault(u => u.Id == id);
-				sess = gameSession;
-				context.TurnModels.AddRange(turns);
-				context.SaveChanges();
-			}
-				return gameSession;
+            return gameSession;
         }
     }
 }

@@ -26,17 +26,17 @@ namespace TicTacToe.Services
         public async Task<string> RenderTemplate<T>(string templateName, T model, string host) where T : class
         {
             var html = await new EmailViewRenderHelper().RenderTemplate(templateName, _hostingEnvironment, _configuration, _httpContextAccessor, model);
-            var targetDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Emails");
+            var targetDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Emails"); // stworzenie miejsca zapisu
 
             if (!Directory.Exists(targetDir))
                 Directory.CreateDirectory(targetDir);
 
-            string dateTime = DateTime.Now.ToString("ddMMHHyyHHmmss");
-            var targetFileName = Path.Combine(targetDir, templateName.Replace("/", "_").Replace("\\", "_") + "." + dateTime + ".html");
-            html = html.Replace("{ViewOnLine}", $"{host.TrimEnd('/')}/Emails/{Path.GetFileName(targetFileName)}");
+            string dateTime = DateTime.Now.ToString("ddMMHHyyHHmmss"); // data wysłanie mail'a
+            var targetFileName = Path.Combine(targetDir, templateName.Replace("/", "_").Replace("\\", "_") + "." + dateTime + ".html"); //plik gdzie zotanie zapisany
+			html = html.Replace("{ViewOnLine}", $"{host.TrimEnd('/')}/Emails/{Path.GetFileName(targetFileName)}"); 
             html = html.Replace("{ServerUrl}", host);
             File.WriteAllText(targetFileName, html);
-            return html;
+            return html; // zwrocenie pliku html
         }
     }
 }

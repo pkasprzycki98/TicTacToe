@@ -32,28 +32,28 @@ namespace TicTacToe.ViewEngines
         }
         private IView FindView(ActionContext actionContext, string viewName)
         {
-            var getViewResult = _viewEngine.GetView(executingFilePath: null, viewPath: viewName, isMainPage: true);
+            var getViewResult = _viewEngine.GetView(executingFilePath: null, viewPath: viewName, isMainPage: true); // szukanie widoku
             if (getViewResult.Success)
             {
                 return getViewResult.View;
             }
-            var findViewResult = _viewEngine.FindView(actionContext, viewName, isMainPage: true);
+            var findViewResult = _viewEngine.FindView(actionContext, viewName, isMainPage: true); // szukanie widoku
             if (findViewResult.Success)
             {
                 return findViewResult.View;
             }
-            var searchedLocations = getViewResult.SearchedLocations.Concat(findViewResult.SearchedLocations);
+            var searchedLocations = getViewResult.SearchedLocations.Concat(findViewResult.SearchedLocations); // lokalizacje które zostały przeszukane
             var errorMessage = string.Join(
                 Environment.NewLine,
-                new[] { $"Nie znaleziono widoku '{viewName}'. Przeszukano następujące miejsca:" }.Concat(searchedLocations)); ;
+                new[] { $"Nie znaleziono widoku '{viewName}'. Przeszukano następujące miejsca:" }.Concat(searchedLocations)); ; // zwrócenie inf
 
             throw new InvalidOperationException(errorMessage);
         }
 
         public async Task<string> RenderEmailToString<TModel>(string viewName, TModel model)
         {
-            var actionContext = GetActionContext();
-            var view = FindView(actionContext, viewName);
+            var actionContext = GetActionContext(); //A string value that specifies the context name.
+			var view = FindView(actionContext, viewName); //znaleźienie widoku na podstawie pobrane actionContext i viewName
             if (view == null)
             {
                 throw new InvalidOperationException(string.Format("Nie można znaleźć widoku '{0}'", viewName));

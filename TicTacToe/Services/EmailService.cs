@@ -24,9 +24,9 @@ namespace TicTacToe.Services
         {
             try
             {
-                _logger.LogInformation($"##Start metody sendEmail## Rozpoczęcie wysyłania wiadomości do {emailTo}");
+                _logger.LogInformation($"##Start metody sendEmail## Rozpoczęcie wysyłania wiadomości do {emailTo}"); // zapisanie log'a
 
-                using (var client = new SmtpClient(_emailServiceOptions.MailServer, int.Parse(_emailServiceOptions.MailPort)))
+                using (var client = new SmtpClient(_emailServiceOptions.MailServer, int.Parse(_emailServiceOptions.MailPort))) // użycie nowego SmtpClient'a
                 {
                     if (bool.Parse(_emailServiceOptions.UseSSL) == true)
                         client.EnableSsl = true;
@@ -34,7 +34,7 @@ namespace TicTacToe.Services
                     if (!string.IsNullOrEmpty(_emailServiceOptions.UserId))
                         client.Credentials = new NetworkCredential(_emailServiceOptions.UserId, _emailServiceOptions.Password);
 
-                    client.Send(new MailMessage("example@example.com", emailTo, subject, message));
+                    client.Send(new MailMessage("example@example.com", emailTo, subject, message)); // wysłanie wiadomości
                 }
             }
             catch (Exception ex)

@@ -36,20 +36,25 @@ namespace TicTacToe
 
         public void ConfigureCommonServices(IServiceCollection services)
         {
-            services.AddLocalization(options => options.ResourcesPath = "Localization");
+            services.AddLocalization(options => options.ResourcesPath = "Localization"); // wskazanie że plik z językami znajdują się w folderze Localization
             services.AddMvc(o =>
             {
+				//Gets a collection of IFilterMetadata which are used to construct filters that apply to all actions.
                 o.Filters.Add(typeof(DetectMobileFilter));
 
-                o.OutputFormatters.RemoveType<JsonOutputFormatter>();
-                o.OutputFormatters.Add(new JsonHalOutputFormatter(new string[] { "application/hal+json", "application/vnd.example.hal+json", "application/vnd.example.hal.v1+json" }));
-            }).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, options => options.ResourcesPath = "Localization").AddDataAnnotationsLocalization();
 
-            services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IGameInvitationService, GameInvitationService>();
-            services.AddSingleton<IGameSessionService, GameSessionService>();
+				o.OutputFormatters.RemoveType<JsonOutputFormatter>(); // Removes all formaters of the specifed type
+                o.OutputFormatters.Add(new JsonHalOutputFormatter(new string[] { "application/hal+json", "application/vnd.example.hal+json", "application/vnd.example.hal.v1+json" })); // dodanie formatowanie z Halcyon
+																																														// HAL is a simple format that gives a consistent and easy way to hyperlink between resources in a RESTful API.
+			}).AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, options => options.ResourcesPath = "Localization").AddDataAnnotationsLocalization(); //	Adds MVC view localization services to the application.	
 
-            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+
+			services.AddSingleton<IUserService, UserService>(); // zarejstrowanie usługi jako SIngleton
+            services.AddSingleton<IGameInvitationService, GameInvitationService>(); // zarejstrowanie usługi jako Singleton
+            services.AddSingleton<IGameSessionService, GameSessionService>(); // zarejstrowanie usługi jako SIngleton
+
+            var connectionString = _configuration.GetConnectionString("DefaultConnection"); // pobranie conncetionString
             services.AddEntityFrameworkSqlServer()
                 .AddDbContext<GameDbContext>((serviceProvider, options) =>
                     options.UseSqlServer(connectionString)
@@ -57,19 +62,20 @@ namespace TicTacToe
                             );
 
             var dbContextOptionsbuilder = new DbContextOptionsBuilder<GameDbContext>()
-                .UseSqlServer(connectionString);
-            services.AddSingleton(dbContextOptionsbuilder.Options);
+                .UseSqlServer(connectionString); // uzycie bazy dannych konkretnego connection string'a
 
-            services.Configure<EmailServiceOptions>(_configuration.GetSection("Email"));
-            services.AddEmailService(_hostingEnvironment, _configuration);
-            services.AddTransient<IEmailTemplateRenderService, EmailTemplateRenderService>();
-            services.AddTransient<EmailViewEngine, EmailViewEngine>();
+            services.AddSingleton(dbContextOptionsbuilder.Options); // rejestracja bazy bannych jako Singleton
 
-            services.AddRouting();
-            services.AddSession(o =>
-            {
-                o.IdleTimeout = TimeSpan.FromMinutes(30);
-            });
+            services.Configure<EmailServiceOptions>(_configuration.GetSection("Email")); // Rejestruje wystąpienie konfiguracji, dla którego zostanie powiązana TOptions
+			services.AddEmailService(_hostingEnvironment, _configuration); //dodanie EmialService folder Extentions/EmailServiceEx...
+            services.AddTransient<IEmailTemplateRenderService, EmailTemplateRenderService>(); // zarejestrowanie usługi jako Transient czyli ulotnej
+            services.AddTransient<EmailViewEngine, EmailViewEngine>(); // dodanie ViewEngine jako Transient
+
+            services.AddRouting(); // dodanie podstawowego adresowania
+            services.AddSession(o =>                         //Adds services required for application session state.
+			{
+                o.IdleTimeout = TimeSpan.FromMinutes(30); //The IdleTimeout indicates how long the session can be idle before its contents are abandoned. Each session access resets the timeout. Note this only applies to the content of the session, not the cookie.
+			});
         }
 
         public void ConfigureDevelopmentServices(IServiceCollection services)

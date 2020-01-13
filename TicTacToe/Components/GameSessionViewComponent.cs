@@ -8,8 +8,8 @@ using TicTacToe.Services;
 namespace TicTacToe.Components
 {
     [ViewComponent(Name = "GameSession")]
-    public class GameSessionViewComponent : ViewComponent
-    {
+    public class GameSessionViewComponent : ViewComponent // https://docs.microsoft.com/pl-pl/aspnet/core/mvc/views/view-components?view=aspnetcore-3.1
+	{
         IGameSessionService _gameSessionService;
         public GameSessionViewComponent(IGameSessionService gameSessionService)
         {
