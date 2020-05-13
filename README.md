@@ -1,5 +1,6 @@
 # TicTacToe
 Gra w kółko i krzyżyk
+Więcej można zobaczyć tutaj: https://www.youtube.com/watch?v=Fb2vvcEQxow
 Aplikacja tworza wraz z książką. Posłużyła mi do nauki ASP .NET CORE 2.2.
 Rejestracja wraz z mailem do potwierdzenia
 ![image](https://user-images.githubusercontent.com/40517767/81789779-bf4b1c80-9504-11ea-810f-d48a79134807.png)
